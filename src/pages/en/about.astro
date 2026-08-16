@@ -1,0 +1,22 @@
+---
+import AboutHeroImage from '../../assets/blog-placeholder-about.jpg';
+import Layout from '../../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="About Me"
+	description="Someone who likes to tinker and take notes while learning"
+	pubDate={new Date('August 15 2026')}
+	heroImage={AboutHeroImage}
+	lang="en"
+>
+	<p>
+		Hi, I'm Tim. I spend my time around data and code, and I like tinkering with new things. This is
+		my notebook — a place to jot down whatever I'm learning or thinking about.
+	</p>
+	<p>
+		I'm not going for polished or expert; a lot of this I'm still figuring out. I write it down
+		partly to keep a record for myself, and partly in case it happens to help someone passing by.
+	</p>
+	<p>Prefer Chinese? See the <a href="/about">中文版</a>.</p>
+</Layout>

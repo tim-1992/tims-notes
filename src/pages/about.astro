@@ -1,0 +1,20 @@
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="关于我"
+	description="一个爱瞎折腾、边学边记的人"
+	pubDate={new Date('August 15 2026')}
+	heroImage={AboutHeroImage}
+	lang="zh"
+>
+	<p>
+		你好，我是 Tim。平时在跟数据和代码打交道，也喜欢瞎折腾点新东西。这里就是我的"碎碎念"——把自己在学的、在想的随手记下来。
+	</p>
+	<p>
+		不追求多专业，很多东西我也还在学的路上。写出来一是给自己留个记录，二是万一对路过的你有点用，那就更好了。
+	</p>
+	<p>欢迎在 <a href="/en/about">English version</a> 看英文版。</p>
+</Layout>

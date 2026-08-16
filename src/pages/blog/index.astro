@@ -1,0 +1,196 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import {
+	categories,
+	categoryOrder,
+	getLangFromUrl,
+	subcategories,
+	useTranslations,
+} from '../../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const prefix = lang === 'en' ? '/en' : '';
+
+const all = (await getCollection('blog', ({ data }) => data.lang === lang)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const groups = categoryOrder.map((key) => {
+	const posts = all.filter((p) => p.data.category === key);
+	const subMap = subcategories[key];
+	let blocks;
+	if (subMap) {
+		blocks = Object.keys(subMap).map((sk) => ({
+			label: subMap[sk][lang],
+			posts: posts.filter((p) => p.data.sub === sk),
+		}));
+		const loose = posts.filter((p) => !p.data.sub || !(p.data.sub in subMap));
+		if (loose.length) blocks = [{ label: null, posts: loose }, ...blocks];
+	} else {
+		blocks = [{ label: null, posts }];
+	}
+	return { key, label: categories[key][lang], count: posts.length, blocks };
+});
+---
+
+<!doctype html>
+<html lang="zh">
+	<head>
+		<BaseHead title={`${t('blog.title')} | ${t('site.title')}`} description={t('site.description')} />
+		<style>
+			main {
+				width: 820px;
+				max-width: calc(100% - 2em);
+			}
+			.page-title {
+				margin-bottom: 1.5rem;
+			}
+			.cats {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em;
+				margin-bottom: 2.5rem;
+			}
+			.cats a {
+				padding: 0.3em 0.9em;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 999px;
+				color: rgb(var(--gray-dark));
+				text-decoration: none;
+				font-size: 0.9em;
+			}
+			.cats a:hover {
+				border-color: #0891b2;
+				color: #0891b2;
+			}
+			section {
+				margin-bottom: 3rem;
+			}
+			.cat-title {
+				display: flex;
+				align-items: baseline;
+				gap: 0.5em;
+				font-size: 1.6rem;
+				margin: 0 0 1rem 0;
+				padding-bottom: 0.4em;
+				border-bottom: 2px solid rgb(var(--gray-light));
+			}
+			.sub-title {
+				font-size: 1.1rem;
+				color: rgb(var(--gray-dark));
+				margin: 1.4rem 0 0.4rem;
+			}
+			.sub-title::before {
+				content: '# ';
+				color: #0891b2;
+			}
+			.count {
+				font-size: 0.8rem;
+				font-weight: 400;
+				color: rgb(var(--gray));
+			}
+			ol.index {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			ol.index li {
+				display: flex;
+				align-items: baseline;
+				gap: 0.75em;
+				padding: 0.5em 0;
+				border-bottom: 1px dashed rgb(var(--gray-light));
+			}
+			ol.index .idx {
+				flex: none;
+				width: 1.6em;
+				color: rgb(var(--gray));
+				font-variant-numeric: tabular-nums;
+			}
+			ol.index .post-title {
+				flex: 1;
+				color: rgb(var(--black));
+				text-decoration: none;
+				font-size: 1.05rem;
+			}
+			ol.index .post-title:hover {
+				color: #2563eb;
+			}
+			ol.index .date {
+				flex: none;
+				color: rgb(var(--gray));
+				font-size: 0.85rem;
+				white-space: nowrap;
+			}
+			.empty {
+				margin: 0.2em 0 0;
+				padding-left: 0.2em;
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+				font-style: italic;
+			}
+			@media (max-width: 560px) {
+				ol.index li {
+					flex-wrap: wrap;
+					gap: 0.2em 0.6em;
+				}
+				ol.index .date {
+					width: 100%;
+					padding-left: 2.35em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1 class="page-title">{t('blog.title')}</h1>
+			<nav class="cats">
+				{groups.map((g) => <a href={`#${g.key}`}>{g.label}</a>)}
+			</nav>
+			{
+				groups.map((g) => (
+					<section id={g.key}>
+						<h2 class="cat-title">
+							{g.label}
+							<span class="count">{g.count}</span>
+						</h2>
+						{g.blocks.map((b) => (
+							<div class="block">
+								{b.label && (
+									<h3 class="sub-title">
+										{b.label}
+										<span class="count">{b.posts.length}</span>
+									</h3>
+								)}
+								{b.posts.length > 0 ? (
+									<ol class="index">
+										{b.posts.map((post, i) => (
+											<li>
+												<span class="idx">{String(i + 1).padStart(2, '0')}</span>
+												<a class="post-title" href={`${prefix}/blog/${post.id}/`}>
+													{post.data.title}
+												</a>
+												<span class="date">
+													<FormattedDate date={post.data.pubDate} />
+												</span>
+											</li>
+										))}
+									</ol>
+								) : (
+									<p class="empty">{t('blog.empty')}</p>
+								)}
+							</div>
+						))}
+					</section>
+				))
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
