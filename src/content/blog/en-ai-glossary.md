@@ -11,7 +11,7 @@ When I started with AI, the thing that nearly made me quit wasn't the theory —
 
 > This field moves fast — model numbers and leaderboards flip every few months. Just remember the names roughly; the point is the concepts. **Concepts are stable; model numbers are fluid.**
 
-## 1. Concepts & core techniques
+## Part 1 · Concepts & core techniques
 ### 1. Core concepts
 
 - **Token**: the smallest unit a model processes; one token ≈ 0.75 English words. Both pricing and context length are counted in tokens. *Like* a taxi charging by the kilometer — a long message is a long ride.
@@ -69,7 +69,7 @@ When I started with AI, the thing that nearly made me quit wasn't the theory —
 
 
 
-## 2. Vendors & models
+## Part 2 · Vendors & models
 
 
 
@@ -120,7 +120,7 @@ Watching one real model evolve beats memorizing names.
 Arc: **general (V2.5→V3) → reasoning (R1) → thinking/non-thinking unified (V3.1→V3.2) → strong agents (V4)**.
 
 
-## 3. Tools & platforms
+## Part 3 · Tools & platforms
 
 
 
