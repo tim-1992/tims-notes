@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -50,9 +49,6 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 						recent.map((post) => (
 							<li>
 								<a href={`${prefix}/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image class="thumb" width={480} height={240} src={post.data.heroImage} alt="" />
-									)}
 									<span class="tag">{categories[post.data.category][lang]}</span>
 									<h3 class="title">{post.data.title}</h3>
 									<p class="date">
@@ -74,8 +70,6 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 		width: 960px;
 		max-width: calc(100% - 2em);
 	}
-
-	/* Hero */
 	.hero {
 		position: relative;
 		text-align: center;
@@ -93,8 +87,8 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 		height: 360px;
 		background: radial-gradient(
 			closest-side,
-			rgba(37, 99, 235, 0.32),
-			rgba(8, 145, 178, 0.22) 55%,
+			rgba(106, 77, 212, 0.22),
+			rgba(201, 114, 42, 0.12) 55%,
 			transparent 80%
 		);
 		filter: blur(20px);
@@ -121,7 +115,7 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 	.hero h1 {
 		font-size: clamp(2.4rem, 6vw, 3.4rem);
 		margin: 0.2em 0 0.3em;
-		background: linear-gradient(120deg, #2563eb, #0891b2 55%, #10b981);
+		background: linear-gradient(120deg, var(--accent), var(--amber));
 		-webkit-background-clip: text;
 		background-clip: text;
 		color: transparent;
@@ -129,8 +123,8 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 	.lede {
 		max-width: 640px;
 		margin: 0 auto 1.8rem;
-		color: rgb(var(--gray-dark));
-		font-size: 1.15rem;
+		color: var(--ink2);
+		font-size: 1.12rem;
 	}
 	.actions {
 		display: flex;
@@ -151,26 +145,25 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 	}
 	.btn-primary {
 		color: #fff;
-		background: linear-gradient(120deg, #2563eb, #0891b2);
-		box-shadow: 0 6px 20px rgba(8, 145, 178, 0.35);
+		background: var(--accent);
+		box-shadow: 0 6px 18px rgba(106, 77, 212, 0.32);
 	}
 	.btn-ghost {
-		color: rgb(var(--gray-dark));
-		border: 1px solid rgb(var(--gray-light));
-		background: rgba(255, 255, 255, 0.6);
+		color: var(--ink2);
+		border: 1px solid var(--line);
+		background: var(--surface);
 	}
 	.btn-ghost:hover {
-		border-color: #0891b2;
-		color: #0891b2;
+		border-color: var(--accent);
+		color: var(--accent);
 	}
-
-	/* Browse chips */
 	.browse {
 		margin-bottom: 3rem;
 	}
 	.browse h2,
 	.recent h2 {
-		font-size: 1.6rem;
+		font-size: 1.5rem;
+		border: none;
 	}
 	.chips {
 		display: flex;
@@ -182,20 +175,20 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 		border-radius: 999px;
 		text-decoration: none;
 		font-size: 0.95rem;
-		color: rgb(var(--gray-dark));
-		background: rgb(var(--gray-light));
+		color: var(--accent);
+		background: var(--surface);
+		border: 1px solid var(--line);
 		transition: all 0.15s ease;
 	}
 	.chip:hover {
 		color: #fff;
-		background: linear-gradient(120deg, #2563eb, #0891b2);
+		background: var(--accent);
+		border-color: var(--accent);
 	}
-
-	/* Recent cards */
 	.recent ul {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 1.5rem;
+		gap: 1.2rem;
 		list-style: none;
 		padding: 0;
 		margin: 1rem 0 0;
@@ -204,38 +197,40 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 		display: block;
 		text-decoration: none;
 		color: inherit;
-	}
-	.thumb {
-		width: 100%;
-		height: auto;
-		border-radius: 14px;
-		margin-bottom: 0.6rem;
-		box-shadow: 0 4px 14px rgba(var(--gray), 25%);
+		height: 100%;
+		box-sizing: border-box;
+		padding: 1.2rem 1.3rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-top: 3px solid var(--accent);
+		border-radius: 3px 3px 12px 12px;
 		transition: transform 0.2s ease, box-shadow 0.2s ease;
 	}
-	.recent li a:hover .thumb {
+	.recent li a:hover {
 		transform: translateY(-3px);
-		box-shadow: var(--box-shadow);
+		box-shadow: var(--shadow);
 	}
 	.tag {
 		display: inline-block;
 		font-size: 0.75rem;
-		color: #0891b2;
+		color: var(--amber);
 		font-weight: 700;
-		margin-bottom: 0.2rem;
+		letter-spacing: 0.05em;
+		margin-bottom: 0.3rem;
 	}
 	.recent .title {
-		font-size: 1.15rem;
-		margin: 0 0 0.2rem;
-		line-height: 1.3;
+		font-size: 1.12rem;
+		margin: 0 0 0.4rem;
+		line-height: 1.4;
+		color: var(--ink);
 	}
 	.recent li a:hover .title {
-		color: #2563eb;
+		color: var(--accent);
 	}
 	.recent .date {
 		margin: 0;
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
+		color: var(--muted);
+		font-size: 0.88rem;
 	}
 	@media (max-width: 720px) {
 		.recent ul {
