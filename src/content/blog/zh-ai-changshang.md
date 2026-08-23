@@ -1,6 +1,6 @@
 ---
 title: 'AI 厂商与模型全景：谁家、什么模型、给谁用'
-description: '一张图认全 AI 厂商与模型：OpenAI、Anthropic、Google 等主流玩家，旗舰/均衡/轻量的分档逻辑，开源与闭源格局，国内外阵营，配 DeepSeek 演变案例和选型建议。'
+description: '一张图认全 AI 厂商与模型：OpenAI、Anthropic、Google 等主流玩家，旗舰/均衡/轻量的分档逻辑，开源与闭源格局，国内外阵营，配 GPT/Claude/Gemini/DeepSeek 四家演变案例和选型建议。'
 pubDate: 'Aug 23 2026'
 heroImage: '../../assets/blog-placeholder-5.jpg'
 lang: 'zh'
@@ -22,17 +22,17 @@ submodule: 'vendors'
 
 先认玩家。每家都有自己的调性和主打方向。
 
-- **OpenAI**：闭源标杆。当前 GPT-5.6 系列分 **Sol**（复杂专业任务）/ **Terra**（性价比均衡）/ **Luna**（低成本高并发）三档，另有安全向 Cyber、图像 GPT Image、实时语音等；历史上的 **o 系列**是主打推理的产品线。
-- **Anthropic**：主打安全对齐、长文本、写代码。当前旗舰 **Claude Fable 5**（面向长时程 agent，最强），下面 **Opus 5**（复杂 agentic 编码/企业）、**Sonnet 5**（速度与智能最佳平衡）、**Haiku 4.5**（最快、接近前沿）三档。分档逻辑：Opus 最强、Sonnet 均衡、Haiku 最快。
-- **Google**：多模态和超长上下文见长。**Gemini** 分 **Pro**（最强推理/编码）/ **Flash**（低延迟性价比）/ **Flash-Lite**（最便宜最快）/ **Nano**（端侧）；当前主力为 Gemini 3.x 与 2.5。配套 **Veo**（视频）、**Imagen / Nano Banana**（图像）。
-- **Meta**：**Llama** 系列，开源阵营代表，催生大量社区衍生模型。
-- **Mistral**：法国厂商，开源 + 商用并行，小而精。
-- **DeepSeek（深度求索）**：国产，高性价比 + 强推理/代码出圈，开源影响力大（版本演变见下文）。
-- **阿里 · 通义千问（Qwen）**：国产开源主力之一，模型矩阵全、社区活跃。
-- **字节 · 豆包（Doubao）**：主打 C 端应用和低价 API。
-- **月之暗面 · Kimi**：以超长上下文起家。
-- **智谱 · GLM**：学术出身，模型与商用并重。
-- **xAI · Grok**：马斯克旗下，深度绑定 X（推特）。
+- **[OpenAI](https://openai.com)**：闭源标杆。当前 GPT-5.6 系列分 **Sol**（复杂专业任务）/ **Terra**（性价比均衡）/ **Luna**（低成本高并发）三档，另有安全向 Cyber、图像 GPT Image、实时语音等；历史上的 **o 系列**是主打推理的产品线。
+- **[Anthropic](https://www.anthropic.com)**：主打安全对齐、长文本、写代码。当前旗舰 **Claude Fable 5**（面向长时程 agent，最强），下面 **Opus 5**（复杂 agentic 编码/企业）、**Sonnet 5**（速度与智能最佳平衡）、**Haiku 4.5**（最快、接近前沿）三档。分档逻辑：Opus 最强、Sonnet 均衡、Haiku 最快。
+- **[Google Gemini](https://gemini.google.com)**：多模态和超长上下文见长。**Gemini** 分 **Pro**（最强推理/编码）/ **Flash**（低延迟性价比）/ **Flash-Lite**（最便宜最快）/ **Nano**（端侧）；当前主力为 Gemini 3.x 与 2.5。配套 **Veo**（视频）、**Imagen / Nano Banana**（图像）。
+- **[Meta · Llama](https://ai.meta.com)**：**Llama** 系列，开源阵营代表，催生大量社区衍生模型。
+- **[Mistral](https://mistral.ai)**：法国厂商，开源 + 商用并行，小而精。
+- **[DeepSeek 深度求索](https://www.deepseek.com)**：国产，高性价比 + 强推理/代码出圈，开源影响力大（版本演变见下文）。
+- **[阿里 · 通义千问 Qwen](https://tongyi.aliyun.com)**：国产开源主力之一，模型矩阵全、社区活跃。
+- **[字节 · 豆包 Doubao](https://www.doubao.com)**：主打 C 端应用和低价 API。
+- **[月之暗面 · Kimi](https://www.kimi.com)**：以超长上下文起家。
+- **[智谱 · GLM](https://www.zhipuai.cn)**：学术出身，模型与商用并重。
+- **[xAI · Grok](https://x.ai)**：马斯克旗下，深度绑定 X（推特）。
 
 ### 分档逻辑：几乎每家都是"三层塔"
 
@@ -85,24 +85,56 @@ flowchart TB
 - **NotebookLM**（Google）：把你上传的资料变成可问答、可生成播客的笔记本。
 - **国内**：豆包、Kimi、通义、文心一言、腾讯元宝等。
 
-## 五、案例：DeepSeek 模型演变
+## 五、案例：四家旗舰模型的演变
 
-看一个真实模型怎么一代代进化，比记名字更有感觉。
+看真实模型怎么一代代进化，比记名字有感觉得多。挑四家主流各看一条主线——早期是公认的里程碑，近期型号沿用本文前面的当前格局（型号流动，认脉络即可）。
 
-- **V2.5**（2024-09）：合并原来的 Chat 与 Coder，通用 + 代码一体化。
-- **V3**（2024-12）：`deepseek-chat` 大升级，671B MoE 架构，通用能力显著增强。
-- **R1**（2025-01）：首个推理模型，支持"思考模式"，数学/代码大涨，凭开源 + 高性价比引爆全球关注。
-- **V3.1**（2025-08）：混合架构，一个模型同时支持思考 / 非思考两种模式。
-- **V3.1-Terminus**（2025-09）：修复中英文混杂，Code / Search Agent 增强。
-- **V3.2**（2025-12，先出 Exp 实验版）：稳定版，思考与非思考模式分离。
-- **V4-Flash**（2026-07）：公测，主打快，Agent 能力大幅提升。
-- **V4-Pro**（2026-08）：正式版，Agent 性能巅峰，思考强度可调（low / high / max）。
+有意思的是，**四家的演变几乎踩着同一条大节奏**：先把通用能力做起来 → 补多模态 → 强化推理（先想再答）→ 卷长时程 Agent。
 
-主线：**通用（V2.5→V3）→ 推理（R1）→ 思考/非思考合一（V3.1→V3.2）→ 强 Agent（V4）**。
+### 1、OpenAI · GPT
+
+- **GPT-3**（2020）：预训练大模型引爆，但还不太会"好好聊天"。
+- **ChatGPT / GPT-3.5**（2022-11）：对话调教 + RLHF，一举把 AI 带进大众视野。
+- **GPT-4**（2023-03）：能力大跃升，开始有多模态。
+- **GPT-4o**（2024）：原生多模态（文/图/音）、更快更便宜、实时语音。
+- **o 系列**（2024 起）：主打"先想再答"的推理线。
+- **GPT-5 → 5.6**（2025–2026）：通用与推理合流，分 Sol / Terra / Luna 三档。
+
+主线：**通用预训练 → 对话（ChatGPT）→ 多模态（4o）→ 推理（o 系列）→ 合流分档（5.x）**。
+
+### 2、Anthropic · Claude
+
+- **Claude 1 / 2**（2023）：起家就主打安全对齐和长文本。
+- **Claude 3**（2024-03）：首次 Opus / Sonnet / Haiku 三档同发，一步到位。
+- **Claude 3.5 / 3.7 Sonnet**（2024–2025）：写代码和 agent 能力猛涨，成了编程首选之一。
+- **Claude 4**（2025）：长时程 agent 更稳。
+- **Claude 5 / Fable 5**（2026）：旗舰面向长时程 agent，下接 Opus 5 / Sonnet 5 / Haiku。
+
+主线：**安全对齐 + 长文本 → 三档同发（3）→ 编码/agent 猛进（3.5→4）→ 长时程 Agent（5 / Fable）**。
+
+### 3、Google · Gemini
+
+- **Bard**（2023）：起步追赶阶段。
+- **Gemini 1.0**（2023-12）：正式对标，主打多模态。
+- **Gemini 1.5**（2024）：超长上下文（百万级 token）成招牌。
+- **Gemini 2.0 / 2.5**（2025）：推理 + 速度分化，Pro / Flash 拉开。
+- **Gemini 3.x**（2026）：Pro / Flash / Flash-Lite / Nano 全档，多模态与超长上下文领先。
+
+主线：**追赶（Bard）→ 对标多模态（1.0）→ 超长上下文（1.5）→ 分档 + 推理（2.x）→ 全档多模态（3.x）**。
+
+### 4、DeepSeek（国产代表）
+
+- **V2.5**（2024-09）：合并 Chat 与 Coder，通用 + 代码一体化。
+- **V3**（2024-12）：671B MoE 架构，通用能力显著增强。
+- **R1**（2025-01）：首个推理模型，支持"思考模式"，凭开源 + 高性价比引爆全球关注。
+- **V3.1 → V3.2**（2025）：思考 / 非思考混合再分离。
+- **V4-Flash / V4-Pro**（2026）：Agent 性能巅峰，思考强度可调。
+
+主线：**通用（V2.5→V3）→ 推理（R1）→ 思考合一再分离（V3.1→V3.2）→ 强 Agent（V4）**。
 
 <pre class="mermaid">
 flowchart LR
-  A["通用<br/>V2.5 → V3"] --> B["推理<br/>R1"] --> C["思考 / 非思考合一<br/>V3.1 → V3.2"] --> D["强 Agent<br/>V4"]
+  A["① 通用能力<br/>GPT-3 · Claude 2 · Gemini 1.0"] --> B["② 多模态<br/>GPT-4o · Gemini 1.5"] --> C["③ 推理<br/>o 系列 · R1"] --> D["④ 长时程 Agent<br/>GPT-5.x · Claude 5 · Gemini 3.x · DeepSeek V4"]
 </pre>
 
 ## 六、选型建议：什么场景选谁
