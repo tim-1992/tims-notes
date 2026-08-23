@@ -58,6 +58,16 @@ flowchart LR
 5. **看显著性 + 效应量**：既确认"是不是真的"，也看"值不值得"。
 6. **下结论**：显著且够大 → 上；不显著或提升太小 → 别上，或加大样本再测。
 
+## 六、用什么工具跑
+
+小场景自己用 SQL + 统计库（Python 的 `scipy.stats`、`statsmodels`）也能算；规模化就用现成平台，它们帮你搞定分流、样本量计算、显著性和看板：
+
+- **Optimizely**、**VWO**：老牌商业实验平台，偏产品/前端改版。
+- **GrowthBook**（开源）、**Statsig**：现代实验平台，工程友好、支持特性开关 + 实验一体。
+- **Google Optimize** 已停服，别再找它；大厂多是自建实验平台。
+
+*一句话*：算一次用统计库够了；要长期、多实验、多人协作，上 GrowthBook / Statsig 这类平台省心。
+
 <div class="keypoint">
 <div class="lbl">一句话记住</div>
 <p>A/B 测试防的是"<strong>把噪声当成效果</strong>"。所以三件事最重要：<strong>随机分组</strong>（差异才能归因）、<strong>样本够大</strong>（压住噪声）、<strong>到点再看</strong>（别偷看提前收）。</p>
