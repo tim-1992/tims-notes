@@ -38,7 +38,7 @@ const cats = categoryOrder.map((k) => ({ key: k, label: categories[k][lang] }));
 			<section class="browse">
 				<h2>{t('home.browse')}</h2>
 				<div class="chips">
-					{cats.map((c) => <a class="chip" href={`${prefix}/blog#${c.key}`}>{c.label}</a>)}
+					{cats.map((c) => <a class="chip" href={`${prefix}/blog/${c.key}/`}>{c.label}</a>)}
 				</div>
 			</section>
 

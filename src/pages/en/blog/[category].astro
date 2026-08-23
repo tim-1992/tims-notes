@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../../components/BaseHead.astro';
+import Footer from '../../../components/Footer.astro';
+import Header from '../../../components/Header.astro';
+import ModuleTree from '../../../components/ModuleTree.astro';
+import { categories, categoryOrder, getLangFromUrl, useTranslations } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+	return categoryOrder.map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const prefix = lang === 'en' ? '/en' : '';
+
+const posts = (await getCollection('blog', ({ data }) => data.lang === lang && data.category === category)).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const label = categories[category][lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<BaseHead title={`${label} | ${t('site.title')}`} description={t('site.description')} />
+		<style>
+			main {
+				width: 820px;
+				max-width: calc(100% - 2em);
+			}
+			.crumb {
+				margin: 0 0 0.6rem;
+				font-size: 0.9rem;
+			}
+			.crumb a {
+				color: var(--ink2);
+				text-decoration: none;
+			}
+			.crumb a:hover {
+				color: var(--accent);
+			}
+			.page-title {
+				margin: 0 0 1.5rem;
+			}
+			.cats {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em;
+				margin-bottom: 2.5rem;
+			}
+			.cats a {
+				padding: 0.3em 0.9em;
+				border: 1px solid var(--line);
+				border-radius: 999px;
+				color: var(--ink2);
+				text-decoration: none;
+				font-size: 0.9em;
+			}
+			.cats a:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+			.cats a.active {
+				color: #fff;
+				background: var(--accent);
+				border-color: var(--accent);
+			}
+			.empty-cat {
+				color: var(--muted);
+				font-style: italic;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="crumb"><a href={`${prefix}/blog`}>← {t('blog.title')}</a></p>
+			<h1 class="page-title">{label}</h1>
+			<nav class="cats">
+				{
+					categoryOrder.map((k) => (
+						<a href={`${prefix}/blog/${k}/`} class={k === category ? 'active' : ''}>
+							{categories[k][lang]}
+						</a>
+					))
+				}
+			</nav>
+			{
+				posts.length > 0 ? (
+					<ModuleTree posts={posts} category={category} lang={lang} prefix={prefix} />
+				) : (
+					<p class="empty-cat">{t('blog.empty')}</p>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>

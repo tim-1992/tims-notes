@@ -2,44 +2,25 @@
 import { getCollection } from 'astro:content';
 import BaseHead from '../../../components/BaseHead.astro';
 import Footer from '../../../components/Footer.astro';
-import FormattedDate from '../../../components/FormattedDate.astro';
 import Header from '../../../components/Header.astro';
-import {
-	categories,
-	categoryOrder,
-	getLangFromUrl,
-	subcategories,
-	useTranslations,
-} from '../../../i18n/ui';
+import { categories, categoryOrder, getLangFromUrl, modules, useTranslations } from '../../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const prefix = lang === 'en' ? '/en' : '';
 
-const all = (await getCollection('blog', ({ data }) => data.lang === lang)).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const all = await getCollection('blog', ({ data }) => data.lang === lang);
 
-const groups = categoryOrder.map((key) => {
-	const posts = all.filter((p) => p.data.category === key);
-	const subMap = subcategories[key];
-	let blocks;
-	if (subMap) {
-		blocks = Object.keys(subMap).map((sk) => ({
-			label: subMap[sk][lang],
-			posts: posts.filter((p) => p.data.sub === sk),
-		}));
-		const loose = posts.filter((p) => !p.data.sub || !(p.data.sub in subMap));
-		if (loose.length) blocks = [{ label: null, posts: loose }, ...blocks];
-	} else {
-		blocks = [{ label: null, posts }];
-	}
-	return { key, label: categories[key][lang], count: posts.length, blocks };
-});
+const cards = categoryOrder.map((key) => ({
+	key,
+	label: categories[key][lang],
+	count: all.filter((p) => p.data.category === key).length,
+	mods: (modules[key] ?? []).map((m) => m.label[lang]),
+}));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<BaseHead title={`${t('blog.title')} | ${t('site.title')}`} description={t('site.description')} />
 		<style>
@@ -50,98 +31,58 @@ const groups = categoryOrder.map((key) => {
 			.page-title {
 				margin-bottom: 1.5rem;
 			}
-			.cats {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5em;
-				margin-bottom: 2.5rem;
+			.cards {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1.2rem;
+				list-style: none;
+				padding: 0;
+				margin: 0;
 			}
-			.cats a {
-				padding: 0.3em 0.9em;
-				border: 1px solid var(--line);
-				border-radius: 999px;
-				color: var(--ink2);
+			.cards li a {
+				display: block;
+				height: 100%;
+				box-sizing: border-box;
+				padding: 1.3rem 1.4rem;
 				text-decoration: none;
-				font-size: 0.9em;
+				color: inherit;
+				background: var(--surface);
+				border: 1px solid var(--line);
+				border-top: 3px solid var(--accent);
+				border-radius: 3px 3px 12px 12px;
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
 			}
-			.cats a:hover {
-				border-color: var(--accent);
-				color: var(--accent);
+			.cards li a:hover {
+				transform: translateY(-3px);
+				box-shadow: var(--shadow);
 			}
-			section {
-				margin-bottom: 3rem;
-			}
-			.cat-title {
+			.card-head {
 				display: flex;
 				align-items: baseline;
 				gap: 0.5em;
-				font-size: 1.6rem;
-				margin: 0 0 1rem 0;
-				padding-bottom: 0.4em;
-				border-bottom: 2px solid var(--line);
+				margin-bottom: 0.5rem;
 			}
-			.sub-title {
-				font-size: 1.1rem;
-				color: var(--ink2);
-				margin: 1.4rem 0 0.4rem;
+			.card-title {
+				font-size: 1.35rem;
+				margin: 0;
+				color: var(--ink);
 			}
-			.sub-title::before {
-				content: '# ';
+			.cards li a:hover .card-title {
 				color: var(--accent);
 			}
 			.count {
 				font-size: 0.8rem;
-				font-weight: 400;
 				color: var(--muted);
 			}
-			ol.index {
-				list-style: none;
+			.mods {
 				margin: 0;
-				padding: 0;
-			}
-			ol.index li {
-				display: flex;
-				align-items: baseline;
-				gap: 0.75em;
-				padding: 0.5em 0;
-				border-bottom: 1px dashed var(--line);
-			}
-			ol.index .idx {
-				flex: none;
-				width: 1.6em;
-				color: var(--muted);
-				font-variant-numeric: tabular-nums;
-			}
-			ol.index .post-title {
-				flex: 1;
-				color: var(--ink);
-				text-decoration: none;
-				font-size: 1.05rem;
-			}
-			ol.index .post-title:hover {
-				color: var(--accent);
-			}
-			ol.index .date {
-				flex: none;
-				color: var(--muted);
-				font-size: 0.85rem;
-				white-space: nowrap;
-			}
-			.empty {
-				margin: 0.2em 0 0;
-				padding-left: 0.2em;
-				color: var(--muted);
+				color: var(--ink2);
 				font-size: 0.9rem;
-				font-style: italic;
+				line-height: 1.6;
 			}
-			@media (max-width: 560px) {
-				ol.index li {
-					flex-wrap: wrap;
-					gap: 0.2em 0.6em;
-				}
-				ol.index .date {
-					width: 100%;
-					padding-left: 2.35em;
+			@media (max-width: 600px) {
+				.cards {
+					grid-template-columns: 1fr;
 				}
 			}
 		</style>
@@ -150,46 +91,21 @@ const groups = categoryOrder.map((key) => {
 		<Header />
 		<main>
 			<h1 class="page-title">{t('blog.title')}</h1>
-			<nav class="cats">
-				{groups.map((g) => <a href={`#${g.key}`}>{g.label}</a>)}
-			</nav>
-			{
-				groups.map((g) => (
-					<section id={g.key}>
-						<h2 class="cat-title">
-							{g.label}
-							<span class="count">{g.count}</span>
-						</h2>
-						{g.blocks.map((b) => (
-							<div class="block">
-								{b.label && (
-									<h3 class="sub-title">
-										{b.label}
-										<span class="count">{b.posts.length}</span>
-									</h3>
-								)}
-								{b.posts.length > 0 ? (
-									<ol class="index">
-										{b.posts.map((post, i) => (
-											<li>
-												<span class="idx">{String(i + 1).padStart(2, '0')}</span>
-												<a class="post-title" href={`${prefix}/blog/${post.id}/`}>
-													{post.data.title}
-												</a>
-												<span class="date">
-													<FormattedDate date={post.data.pubDate} />
-												</span>
-											</li>
-										))}
-									</ol>
-								) : (
-									<p class="empty">{t('blog.empty')}</p>
-								)}
-							</div>
-						))}
-					</section>
-				))
-			}
+			<ul class="cards">
+				{
+					cards.map((c) => (
+						<li>
+							<a href={`${prefix}/blog/${c.key}/`}>
+								<div class="card-head">
+									<h2 class="card-title">{c.label}</h2>
+									<span class="count">{c.count}</span>
+								</div>
+								<p class="mods">{c.mods.join(' · ')}</p>
+							</a>
+						</li>
+					))
+				}
+			</ul>
 		</main>
 		<Footer />
 	</body>

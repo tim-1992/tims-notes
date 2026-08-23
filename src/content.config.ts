@@ -16,7 +16,8 @@ const blog = defineCollection({
 			heroImage: z.optional(image()),
 			lang: z.enum(['zh', 'en']).default('zh'),
 			category: z.enum(['ai', 'warehouse', 'analysis', 'misc']).default('misc'),
-			sub: z.string().optional(),
+			module: z.string().optional(),
+			submodule: z.string().optional(),
 		}),
 });
 
