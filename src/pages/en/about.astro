@@ -1,22 +1,162 @@
 ---
-import AboutHeroImage from '../../assets/blog-placeholder-about.jpg';
-import Layout from '../../layouts/BlogPost.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { categories, categoryOrder } from '../../i18n/ui';
 ---
 
-<Layout
-	title="About Me"
-	description="Someone who likes to tinker and take notes while learning"
-	pubDate={new Date('August 15 2026')}
-	heroImage={AboutHeroImage}
-	lang="en"
->
-	<p>
-		Hi, I'm Tim. I spend my time around data and code, and I like tinkering with new things. This is
-		my notebook — a place to jot down whatever I'm learning or thinking about.
-	</p>
-	<p>
-		I'm not going for polished or expert; a lot of this I'm still figuring out. I write it down
-		partly to keep a record for myself, and partly in case it happens to help someone passing by.
-	</p>
-	<p>Prefer Chinese? See the <a href="/about">中文版</a>.</p>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="About Me | Tim's Notes" description="Someone who likes to tinker and take notes while learning" />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="intro">
+				<div class="glow" aria-hidden="true"></div>
+				<p class="wave">👋</p>
+				<h1>About Me</h1>
+				<p class="lede">Hi, I'm Tim. I spend my time around data and code, and I like tinkering with new things.</p>
+			</section>
+
+			<section class="bio">
+				<p>
+					This is my notebook — a place to jot down whatever I'm learning or thinking about. I'm not
+					going for polished or expert; a lot of this I'm still figuring out.
+				</p>
+				<p>
+					I write it down partly to keep a record for myself, and partly in case it happens to help
+					someone passing by.
+				</p>
+			</section>
+
+			<section class="browse">
+				<h2>What you'll find here</h2>
+				<div class="chips">
+					{categoryOrder.map((k) => <a class="chip" href={`/en/blog/${k}/`}>{categories[k].en}</a>)}
+				</div>
+			</section>
+
+			<p class="lang"><a href="/about">中文版 →</a></p>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	main {
+		width: 720px;
+		max-width: calc(100% - 2em);
+	}
+	.intro {
+		position: relative;
+		text-align: center;
+		padding: 2.5rem 1rem 2rem;
+		overflow: hidden;
+	}
+	.glow {
+		position: absolute;
+		top: -120px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 560px;
+		max-width: 100%;
+		height: 320px;
+		background: radial-gradient(
+			closest-side,
+			rgba(106, 77, 212, 0.2),
+			rgba(201, 114, 42, 0.1) 55%,
+			transparent 80%
+		);
+		filter: blur(20px);
+		z-index: -1;
+	}
+	.wave {
+		font-size: 2.8rem;
+		margin: 0;
+		animation: wave 2.5s ease-in-out infinite;
+		transform-origin: 70% 70%;
+		display: inline-block;
+	}
+	@keyframes wave {
+		0%, 60%, 100% { transform: rotate(0deg); }
+		10% { transform: rotate(14deg); }
+		20% { transform: rotate(-8deg); }
+		30% { transform: rotate(14deg); }
+		40% { transform: rotate(-4deg); }
+		50% { transform: rotate(10deg); }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.wave { animation: none; }
+	}
+	.intro h1 {
+		font-size: clamp(2.2rem, 5vw, 3rem);
+		margin: 0.2em 0 0.3em;
+		background: linear-gradient(120deg, var(--accent), var(--amber));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+	.lede {
+		max-width: 560px;
+		margin: 0 auto;
+		color: var(--ink2);
+		font-size: 1.15rem;
+	}
+	.bio {
+		margin: 1.5rem 0 2.5rem;
+		padding: 1.6rem 1.8rem;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		border-left: 3px solid var(--accent);
+		border-radius: 3px 12px 12px 3px;
+		box-shadow: var(--shadow);
+	}
+	.bio p {
+		margin: 0 0 0.8em;
+		line-height: 1.9;
+		color: var(--ink);
+	}
+	.bio p:last-child {
+		margin-bottom: 0;
+	}
+	.browse h2 {
+		font-size: 1.3rem;
+		border: none;
+		margin: 0 0 0.9rem;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+	}
+	.chip {
+		padding: 0.4em 1em;
+		border-radius: 999px;
+		text-decoration: none;
+		font-size: 0.95rem;
+		color: var(--accent);
+		background: var(--surface);
+		border: 1px solid var(--line);
+		transition: all 0.15s ease;
+	}
+	.chip:hover {
+		color: #fff;
+		background: var(--accent);
+		border-color: var(--accent);
+		transform: translateY(-2px);
+	}
+	.lang {
+		margin-top: 2.5rem;
+		text-align: center;
+	}
+	.lang a {
+		color: var(--muted);
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+	.lang a:hover {
+		color: var(--accent);
+	}
+</style>
