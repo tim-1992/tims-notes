@@ -6,7 +6,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://tims-notes.vercel.app',
 	i18n: {
 		locales: ['zh', 'en'],
 		defaultLocale: 'zh',
