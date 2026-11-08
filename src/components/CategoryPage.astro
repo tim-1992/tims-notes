@@ -1,0 +1,12 @@
+---
+import Site from '../layouts/Site.astro';
+import ModuleTree from './ModuleTree.astro';
+import {categories,categoryOrder,getLangFromUrl,type Category} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {prefix,postsFor} from '../lib/posts';
+interface Props {category:Category}
+const {category}=Astro.props;
+const lang=getLangFromUrl(Astro.url),d=copy(lang),pre=prefix(lang);
+const posts=(await postsFor(lang)).filter(p=>p.data.category===category),label=categories[category][lang];
+---
+<Site title={`${label} | ${d.title}`}><section class="category-page section-shell"><a class="back-link" href={`${pre}/blog/`}>← {d.back}</a><div class="section-heading"><div><p class="section-eyebrow">THE NOTEBOOK / {category.toUpperCase()}</p><h1>{label}</h1></div><span class="archive-total">{posts.length} {d.count}</span></div><nav class="filter-tabs category-tabs" aria-label={d.categories}>{categoryOrder.map(key=><a class:list={['filter',{active:key===category}]} href={`${pre}/blog/${key}/`} aria-current={key===category?'page':undefined}>{categories[key][lang]}</a>)}</nav>{posts.length?<ModuleTree posts={posts} category={category} lang={lang} prefix={pre}/>:<p class="archive-empty">{d.noPosts}</p>}</section></Site>

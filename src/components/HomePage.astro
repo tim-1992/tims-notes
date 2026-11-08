@@ -1,0 +1,37 @@
+---
+import Site from '../layouts/Site.astro';
+import Icon from './Icon.astro';
+import Archive from './Archive.astro';
+import Featured from './Featured.astro';
+import { getLangFromUrl } from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {prefix,postsFor} from '../lib/posts';
+const lang=getLangFromUrl(Astro.url),d=copy(lang),pre=prefix(lang),posts=await postsFor(lang);
+---
+<Site><div id="homeView">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-topline"><span><i></i> TIM’S PERSONAL PLAYGROUND</span><span>{d.interests}</span><span>PERSONAL SPACE — ALWAYS IN PROGRESS</span></div>
+      <div class="hero-text">
+        <div class="intro-label">{d.hello}<span>↘</span></div>
+        <h1 id="heroTitle">{d.line1}<br><span>{d.line2}<span class="title-period">{d.period}</span></span></h1>
+        <div class="hero-caption"><span class="scribble-arrow" aria-hidden="true">⤴</span><p>{d.intro1}<br>{d.intro2}</p></div>
+        <div class="hero-actions"><a class="button button-solid" href={`${pre}/blog/`}>{d.cta} <Icon name="arrow"/></a><a class="quiet-link" href={`${pre}/about/`}>{d.meet} <span>↗</span></a></div>
+      </div>
+      <div class="hero-art" aria-label={d.art}>
+        <div class="art-grid" aria-hidden="true"></div>
+        <div class="playground-fallback" aria-hidden="true"><span>✳</span><i></i><b>ϟ</b></div>
+        <canvas id="playgroundCanvas" aria-hidden="true"></canvas>
+        <span class="art-sticker sticker-top">100%<br><b>{d.made}</b></span>
+        <span class="art-sticker sticker-bottom"><span>✦</span> MAKE ROOM<br>FOR WEIRD IDEAS.</span>
+        <div class="playground-controls"><span id="playHint">{d.drag}</span><button id="shuffleToys" type="button" aria-label={d.shuffleLabel}>{d.shuffle} <span>↻</span></button></div>
+      </div>
+      <div class="hero-bottom"><span>{d.values}</span><a href="#featured">{d.discover} <span>↓</span></a><span class="status-label"><i></i> OPEN TO NEW IDEAS</span></div>
+    </section>
+    <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>STAY CURIOUS <b>✳</b> MAKE THINGS <b>↗</b> BREAK ROUTINES <b>✳</b> HAVE FUN <b>↗</b> </span><span>STAY CURIOUS <b>✳</b> MAKE THINGS <b>↗</b> BREAK ROUTINES <b>✳</b> HAVE FUN <b>↗</b> </span></div></div>
+
+
+<Featured posts={posts} lang={lang}/>
+<Archive posts={posts} lang={lang} limit={7}/>
+<section class="about-strip section-shell"><span class="about-asterisk" aria-hidden="true">✳</span><div><p>{d.hi}</p><h2>{d.write} <span>{d.trace}</span></h2><p class="about-summary">{d.summary}</p></div><a class="round-link" href={`${pre}/about/`} aria-label={d.meet}><span>↗</span></a></section>
+</div></Site>
+<script src="../scripts/playground.js"></script>

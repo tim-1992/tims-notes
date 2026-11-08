@@ -24,7 +24,7 @@ export const ui = {
 		'about.title': '关于我',
 	},
 	en: {
-		'site.title': '愤怒的葡萄',
+		'site.title': 'Angry Grapes',
 		'site.description': "Data, code, and a few thoughts — notes on what I'm learning",
 		'nav.home': 'Home',
 		'nav.blog': 'Blog',

@@ -1,0 +1,13 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Search from '../components/Search.astro';
+import {getLangFromUrl,useTranslations} from '../i18n/ui';
+import type { ImageMetadata } from 'astro';
+interface Props {title?:string;description?:string;image?:ImageMetadata}
+const lang=getLangFromUrl(Astro.url),t=useTranslations(lang);
+const {title=t('site.title'),description=t('site.description'),image}=Astro.props;
+---
+<!doctype html>
+<html lang={lang}><head><BaseHead title={title} description={description} image={image}/></head><body><Header/><main id="main-content"><slot/></main><Footer/><Search/><slot name="scripts"/></body></html>

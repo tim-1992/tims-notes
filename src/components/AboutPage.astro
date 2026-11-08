@@ -1,0 +1,11 @@
+---
+import Site from '../layouts/Site.astro';
+import Icon from './Icon.astro';
+import {getLangFromUrl,categories,categoryOrder} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {prefix} from '../lib/posts';
+const lang=getLangFromUrl(Astro.url),d=copy(lang),pre=prefix(lang);
+---
+<Site title={`${d.about} | ${d.title}`} description={d.bio1}>
+<section class="about-page section-shell"><a class="back-link" href={`${pre}/`}>← {d.backHome}</a><div class="intro-label">{d.aboutLabel}</div><h1>{d.about1}<br/><span>{d.about2}</span></h1><div class="about-page-body"><div class="avatar-monogram" aria-hidden="true"><Icon/><span>Tim</span></div><div><h2>{d.aboutHello}</h2><p>{d.bio1}</p><p>{d.bio2}</p><p>{d.bio3}</p><a class="button button-outline" href={`${pre}/blog/`}>{d.aboutCta}<Icon name="arrow"/></a></div></div><nav class="about-topics" aria-label={d.categories}>{categoryOrder.map(key=><a class="filter" href={`${pre}/blog/${key}/`}>{categories[key][lang]} ↗</a>)}</nav></section>
+</Site>

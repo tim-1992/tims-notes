@@ -1,0 +1,9 @@
+---
+import Site from '../layouts/Site.astro';
+import Archive from './Archive.astro';
+import {getLangFromUrl} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {postsFor} from '../lib/posts';
+const lang=getLangFromUrl(Astro.url),d=copy(lang),posts=await postsFor(lang);
+---
+<Site title={`${d.notes} | ${d.title}`}><Archive posts={posts} lang={lang} standalone/></Site>

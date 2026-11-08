@@ -3,7 +3,8 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
+import {getLangFromUrl} from '../i18n/ui';
+import {languageLink,prefix} from '../lib/posts';
 import { SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 
@@ -15,30 +16,24 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const {title,description,image}=Astro.props;
+const lang=getLangFromUrl(Astro.url),alternate=await languageLink(Astro.url);
+const socialImage=new URL(image?.src || '/social-card.png',Astro.site);
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-<script is:inline>
-	(function () {
-		try {
-			var s = localStorage.getItem('theme');
-			var dark = s ? s === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-			document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-		} catch (e) {}
-	})();
-</script>
+<meta name="theme-color" content="#f7f6ef" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
 	rel="alternate"
 	type="application/rss+xml"
 	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+	href={new URL(`${prefix(lang)}/rss.xml`, Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
@@ -46,6 +41,8 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+<link rel="alternate" hreflang={lang} href={canonicalURL}/>
+{alternate.exact&&<link rel="alternate" hreflang={alternate.lang} href={new URL(alternate.href,Astro.site)}/>}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
@@ -53,10 +50,12 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={socialImage} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+
+<meta name="twitter:title" content={title}/><meta name="twitter:description" content={description}/><meta name="twitter:image" content={socialImage}/>

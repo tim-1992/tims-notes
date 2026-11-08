@@ -1,36 +1,8 @@
 ---
-const today = new Date();
+import {getLangFromUrl} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {prefix} from '../lib/posts';
+import Icon from './Icon.astro';
+const lang=getLangFromUrl(Astro.url),d=copy(lang),pre=prefix(lang);
 ---
-
-<footer>
-	<p>&copy; {today.getFullYear()} Tim · 数据、代码，和一些想法</p>
-	<div class="links">
-		<a href="https://github.com/tim-1992/tims-notes" target="_blank" rel="noopener">GitHub</a>
-		<span aria-hidden="true">·</span>
-		<a href="/rss.xml">RSS</a>
-	</div>
-</footer>
-<style>
-	footer {
-		border-top: 1px solid var(--line);
-		padding: 2.5em 1em 5em;
-		color: var(--muted);
-		text-align: center;
-		font-size: 0.9rem;
-	}
-	footer p {
-		margin: 0 0 0.6em;
-	}
-	.links {
-		display: flex;
-		gap: 0.6em;
-		justify-content: center;
-	}
-	.links a {
-		color: var(--muted);
-		text-decoration: none;
-	}
-	.links a:hover {
-		color: var(--accent);
-	}
-</style>
+<footer class="site-footer section-shell"><a class="footer-wordmark" href={`${pre}/`}><Icon/>{d.title}</a><p>{d.footer}</p><div><a href="https://github.com/tim-1992/tims-notes" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={`${pre}/rss.xml`}>RSS ↗</a><span>© {new Date().getFullYear()} Tim</span></div></footer>

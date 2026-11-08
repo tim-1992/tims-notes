@@ -1,0 +1,15 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import {categories,type Lang} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {calendarDate,postUrl,prefix,minutes} from '../lib/posts';
+import {drawings} from '../lib/covers';
+interface Props {posts:CollectionEntry<'blog'>[];lang:Lang}
+const {posts,lang}=Astro.props,d=copy(lang);
+const ids=lang==='zh'?['zh-analysis-north-star','zh-analysis-roi-roas-ltv','zh-ai-aider-gemini']:['en-analysis-roi-roas-ltv','en-ai-intro','en-abtest'];
+const selected=ids.map(id=>posts.find(p=>p.id===id)).filter((p):p is CollectionEntry<'blog'>=>!!p);
+---
+<section class="featured-section section-shell" id="featured" aria-labelledby="featuredTitle">
+ <div class="section-heading"><div><p class="section-eyebrow">01 / SELECTED NOTES</p><h2 id="featuredTitle">{d.selected}<span class="small-star" aria-hidden="true">✳</span></h2></div><a class="quiet-link" href={`${prefix(lang)}/blog/`}>{d.allNotes}<span>↗</span></a></div>
+ <div class="featured-grid">{selected.map((p,i)=><a class="feature-card" href={postUrl(p)}><div class="feature-art"><Fragment set:html={drawings[i]}/><div class="feature-art-label"><span>{['FOLLOW YOUR CURIOSITY','BEYOND THE OBVIOUS','MAKE IDEAS WORK'][i]}</span><span>↗</span></div></div><div class="feature-category">{categories[p.data.category][lang]}</div><h3>{p.data.title}</h3><p>{p.data.description}</p><time class="feature-date" datetime={p.data.pubDate.toISOString()}>{calendarDate(p.data.pubDate).replaceAll('-','.')} / {minutes(p.body)} {d.minute}</time></a>)}</div>
+</section>

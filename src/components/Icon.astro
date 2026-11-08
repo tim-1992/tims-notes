@@ -1,0 +1,9 @@
+---
+interface Props { name?: 'brand' | 'arrow' | 'search'; class?: string }
+const {name='brand',class:className}=Astro.props;
+---
+<svg class={className} viewBox={name==='brand'?'0 0 40 40':'0 0 24 24'} aria-hidden="true">
+ {name==='brand'&&<path d="M16 1h8v11l8-8 6 6-8 8h10v8H29l8 8-6 6-11-11-10 10-6-6 8-8H1v-8h11L4 9l6-6 6 6Z" fill="currentColor"/>}
+ {name==='arrow'&&<path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>}
+ {name==='search'&&<><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.7"/></>}
+</svg>

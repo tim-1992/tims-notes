@@ -1,0 +1,12 @@
+---
+import {getLangFromUrl} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import Icon from './Icon.astro';
+const d=copy(getLangFromUrl(Astro.url));
+---
+<dialog id="searchDialog" aria-labelledby="searchTitle">
+ <div class="search-dialog-head"><h2 id="searchTitle">{d.searchTitle}</h2><button class="close-search" aria-label={d.close}>Esc <span>×</span></button></div>
+ <label class="search-field"><Icon name="search"/><input id="searchInput" type="search" placeholder={d.placeholder} aria-label={d.search} autocomplete="off"/></label>
+ <div id="searchResults" class="search-results" aria-live="polite"></div>
+</dialog>
+<script src="../scripts/site.js"></script>

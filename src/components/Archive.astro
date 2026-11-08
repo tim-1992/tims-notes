@@ -1,0 +1,18 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import {categories,categoryOrder,type Lang,type Category} from '../i18n/ui';
+import {copy} from '../i18n/design';
+import {calendarDate,postUrl,prefix} from '../lib/posts';
+import Icon from './Icon.astro';
+interface Props {posts:CollectionEntry<'blog'>[];lang:Lang;limit?:number;category?:Category;standalone?:boolean}
+const {posts,lang,limit=12,category,standalone=false}=Astro.props,d=copy(lang),pre=prefix(lang);
+---
+<section class:list={['archive-section','section-shell',{'standalone-archive':standalone}]} id="archive" aria-labelledby="archiveTitle" data-archive data-limit={limit} data-count-label={d.count}>
+ <div class="section-heading"><div><p class="section-eyebrow">02 / THE NOTEBOOK</p>{standalone?<h1 id="archiveTitle">{d.notebook}</h1>:<h2 id="archiveTitle">{d.notebook}</h2>}</div><span class="archive-total">{posts.length} {d.count}</span></div>
+ <div class="archive-controls"><nav class="filter-tabs" aria-label={d.categories}>
+ <a class:list={['filter',{active:!category}]} href={`${pre}/blog/`} data-category="all" aria-current={!category?'page':undefined}>{d.all}</a>
+ {categoryOrder.map(key=><a class:list={['filter',{active:category===key}]} href={`${pre}/blog/${key}/`} data-category={key} aria-current={category===key?'page':undefined}>{categories[key][lang]}</a>)}
+ </nav><button class="search-trigger archive-search js-only" aria-label={d.search}><Icon name="search"/><span>{d.find}</span></button></div>
+ <div class="article-list" aria-live="polite">{posts.map(p=><a class="article-row" href={postUrl(p)} data-post-category={p.data.category}><span class="article-row-category">{categories[p.data.category][lang]}</span><h3>{p.data.title}</h3><time datetime={p.data.pubDate.toISOString()}>{calendarDate(p.data.pubDate).replaceAll('-','.')}</time><span aria-hidden="true">↗</span></a>)}</div>
+ <p class="archive-empty" hidden>{d.noPosts}</p><button class="load-more js-only" hidden>{d.more}<span>↓</span></button>
+</section>
