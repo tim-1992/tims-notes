@@ -7,7 +7,7 @@ export const defaultLang = 'zh';
 
 export const ui = {
 	zh: {
-		'site.title': 'Tim 的碎碎念',
+		'site.title': '愤怒的葡萄',
 		'site.description': '数据、代码，和一些想法 —— 记点自己在学的东西',
 		'nav.home': '首页',
 		'nav.blog': '博客',
@@ -24,7 +24,7 @@ export const ui = {
 		'about.title': '关于我',
 	},
 	en: {
-		'site.title': "Tim's Notes",
+		'site.title': '愤怒的葡萄',
 		'site.description': "Data, code, and a few thoughts — notes on what I'm learning",
 		'nav.home': 'Home',
 		'nav.blog': 'Blog',
